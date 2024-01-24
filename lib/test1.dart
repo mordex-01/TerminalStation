@@ -1,63 +1,10 @@
 // Main function
+//attach seats to bosses and can edit each seat
+//fix errors and remain
 import 'dart:io';
 
 void main() {
   Terminal.terminalMenu();
-}
-
-class Seats {
-  static List<int> normalSeatChairs = [
-    01,
-    02,
-    03,
-    04,
-    05,
-    06,
-    07,
-    08,
-    09,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30,
-    31,
-    32,
-    33,
-    34,
-    35,
-    36,
-    37,
-    38,
-    39,
-    40,
-    41,
-    42,
-    43,
-    44,
-  ];
-  static List<int> vipSeatChairs = [];
-}
-
-enum SeatsType {
-  rr,
-  bb,
 }
 
 class Terminal {
@@ -145,14 +92,28 @@ class Terminal {
     }
 
     if (input2 == "1") {
-      Bus bus = Bus(input1, BusType.vip, id);
+      List<String> vipSeats = [];
+      for (int i = 1; i <= 9; i++) {
+        vipSeats.add("0" + i.toString());
+      }
+      for (int i = 10; i <= 30; i++) {
+        vipSeats.add(i.toString());
+      }
+      Bus bus = Bus(input1, BusType.vip, id, vipSeats);
       Bus.busList.add(bus);
       print("Bus Definition is Compleated");
       id++;
       return terminalMenu();
     }
     if (input2 == "2") {
-      Bus bus = Bus(input1, BusType.normal, id);
+      List<String> normalSteats = [];
+      for (int i = 1; i <= 9; i++) {
+        normalSteats.add("0" + i.toString());
+      }
+      for (int i = 10; i <= 44; i++) {
+        normalSteats.add(i.toString());
+      }
+      Bus bus = Bus(input1, BusType.normal, id, normalSteats);
       Bus.busList.add(bus);
       print("Bus Definition is Compleated");
       return terminalMenu();
@@ -243,8 +204,24 @@ class Terminal {
       String startPoint = input1;
       String stopPoint = input2;
       int price = int.parse(input3);
-      Trip trip = Trip(startPoint, stopPoint, selectedBus, price);
-      Trip.tripList.add(trip);
+      if (selectedBus.type == BusType.normal) {
+        Trip trip = Trip(
+          startPoint,
+          stopPoint,
+          selectedBus,
+          price,
+        );
+        Trip.tripList.add(trip);
+      }
+      if (selectedBus.type == BusType.vip) {
+        Trip trip = Trip(
+          startPoint,
+          stopPoint,
+          selectedBus,
+          price,
+        );
+        Trip.tripList.add(trip);
+      }
       print("Trip Was Sucssesfully added");
     } else {
       print("Invalid bus ID");
@@ -260,7 +237,69 @@ class Terminal {
           "BusID : ${trips.bus.id}, BusName : ${trips.bus.name}, BusType : ${trips.bus.type.name}, Start Point : ${trips.startPoint}, Stop Point : ${trips.stopPoint}, Price : ${trips.price}");
     }
     print("Enter BusID To See Bus Seats (${Trip.tripList.length + 1}-Cancel)");
+    String? input = stdin.readLineSync();
 
+    for (Bus buses in Bus.busList) {
+      if (buses.id == int.parse(input!)) {
+        if (buses.type == BusType.vip) {
+//print Seats Vip
+          print(
+              '${buses.seatsList[0]}    ${buses.seatsList[1]} ${buses.seatsList[2]}');
+          print(
+              '${buses.seatsList[3]}    ${buses.seatsList[4]} ${buses.seatsList[5]}');
+          print(
+              '${buses.seatsList[6]}    ${buses.seatsList[7]} ${buses.seatsList[8]}');
+          print(
+              '${buses.seatsList[9]}    ${buses.seatsList[10]} ${buses.seatsList[11]}');
+          print(
+              '${buses.seatsList[12]}    ${buses.seatsList[13]} ${buses.seatsList[14]}');
+          print('${buses.seatsList[15]}');
+          print('${buses.seatsList[16]}');
+          print('${buses.seatsList[17]}');
+          print(
+              '${buses.seatsList[18]}    ${buses.seatsList[19]} ${buses.seatsList[20]}');
+          print(
+              '${buses.seatsList[21]}    ${buses.seatsList[22]} ${buses.seatsList[23]}');
+          print(
+              '${buses.seatsList[24]}    ${buses.seatsList[25]} ${buses.seatsList[26]}');
+          print(
+              '${buses.seatsList[27]}    ${buses.seatsList[28]} ${buses.seatsList[29]}');
+        }
+        if (buses.type == BusType.normal) {
+//print Seats Normal
+          print(
+              '${buses.seatsList[0]} ${buses.seatsList[1]}   ${buses.seatsList[2]} ${buses.seatsList[3]}');
+          print(
+              '${buses.seatsList[4]} ${buses.seatsList[5]}   ${buses.seatsList[6]} ${buses.seatsList[7]}');
+          print(
+              '${buses.seatsList[8]} ${buses.seatsList[9]}   ${buses.seatsList[10]} ${buses.seatsList[11]}');
+          print(
+              '${buses.seatsList[12]} ${buses.seatsList[13]}   ${buses.seatsList[14]} ${buses.seatsList[15]}');
+          print(
+              '${buses.seatsList[16]} ${buses.seatsList[17]}   ${buses.seatsList[18]} ${buses.seatsList[19]}');
+          print('${buses.seatsList[20]} ${buses.seatsList[21]}');
+          print('${buses.seatsList[22]} ${buses.seatsList[23]}');
+          print(
+              '${buses.seatsList[24]} ${buses.seatsList[25]}   ${buses.seatsList[26]} ${buses.seatsList[27]}');
+          print(
+              '${buses.seatsList[28]} ${buses.seatsList[29]}   ${buses.seatsList[30]} ${buses.seatsList[31]}');
+          print(
+              '${buses.seatsList[32]} ${buses.seatsList[33]}   ${buses.seatsList[34]} ${buses.seatsList[35]}');
+          print(
+              '${buses.seatsList[36]} ${buses.seatsList[37]}   ${buses.seatsList[38]} ${buses.seatsList[39]}');
+          print(
+              '${buses.seatsList[40]} ${buses.seatsList[41]}   ${buses.seatsList[42]} ${buses.seatsList[43]}');
+        }
+      }
+    }
+    if (input == null || input.isEmpty) {
+      print("*Error Canceled Enter Valid ID");
+      return terminalMenu();
+    }
+    if (int.parse(input) == Trip.tripList.length + 1) {
+      print("Canceled");
+      return terminalMenu();
+    }
     terminalMenu();
   }
 }
@@ -268,10 +307,11 @@ class Terminal {
 class Bus {
   static List<Bus> busList = [];
   // Bus class implementation
-  Bus(this.name, this.type, this.id);
+  Bus(this.name, this.type, this.id, this.seatsList);
   final String name;
   final BusType type;
   final int id;
+  final List<String> seatsList;
 }
 
 enum BusType { vip, normal }
@@ -279,9 +319,20 @@ enum BusType { vip, normal }
 class Trip {
   static List<Trip> tripList = [];
   // Trip class implementation
-  Trip(this.startPoint, this.stopPoint, this.bus, this.price);
+  Trip(
+    this.startPoint,
+    this.stopPoint,
+    this.bus,
+    this.price,
+  );
   final Bus bus;
   final String startPoint;
   final String stopPoint;
   final int price;
+}
+
+class BusSeats extends Trip {
+  BusSeats(super.startPoint, super.stopPoint, super.bus, super.price,
+      this.seatsList);
+  List<int> seatsList = [];
 }
