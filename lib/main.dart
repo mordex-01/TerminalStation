@@ -10,6 +10,7 @@ void main() {
 }
 
 class Terminal {
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
   static void terminalMenu() {
     // Terminal menu implementation
     print("""
@@ -17,7 +18,9 @@ class Terminal {
 1-Bus definition
 2-Trip definition
 3-View available trips
-4-book a ticket
+4-Book a ticket
+5-Buy a ticket
+6-Cancel a ticket
 8-Exit
 """);
     print("Please Enter The Number");
@@ -49,12 +52,15 @@ class Terminal {
     }
     if (input == "5") {
       //buy a ticket
+      byaTicket();
     }
     if (input == "6") {
       //cancel a ticket
+      CancelaTicket();
     }
     if (input == "7") {
       //trip report
+      tripReport();
     }
     if (input == "8") {
       print("GoodBye...");
@@ -62,6 +68,7 @@ class Terminal {
     }
   }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
   // (ترمینال مسافربری) PassengerTerminal implementation
 //Bus definition
   static void busDefinition() {
@@ -112,7 +119,7 @@ class Terminal {
       for (int i = 10; i <= 30; i++) {
         vipSeats.add(i.toString());
       }
-      Bus bus = Bus(input1, BusType.vip, id, vipSeats);
+      Bus bus = Bus(input1, BusType.vip, id, vipSeats, 30);
       Bus.busList.add(bus);
       print("Bus Definition is Compleated");
       id++;
@@ -126,13 +133,14 @@ class Terminal {
       for (int i = 10; i <= 44; i++) {
         normalSteats.add(i.toString());
       }
-      Bus bus = Bus(input1, BusType.normal, id, normalSteats);
+      Bus bus = Bus(input1, BusType.normal, id, normalSteats, 44);
       Bus.busList.add(bus);
       print("Bus Definition is Compleated");
       return terminalMenu();
     }
   }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
   static void tripDefinition() {
     // Trip definition implementation
     print("List Of Trips");
@@ -160,6 +168,7 @@ class Terminal {
         break;
       }
     }
+
     if (selectedBus != null) {
       print("Selected bus: ${selectedBus.name}");
       // Do something with selectedBus
@@ -218,26 +227,43 @@ class Terminal {
       String stopPoint = input2;
       int price = int.parse(input3);
       int tripid = selectedBus.id;
+
       if (selectedBus.type == BusType.normal) {
-        Trip trip = Trip(startPoint, stopPoint, selectedBus, price, tripid);
+        Trip trip = Trip(
+          startPoint,
+          stopPoint,
+          selectedBus,
+          price,
+          tripid,
+        );
         Trip.tripList.add(trip);
       }
       if (selectedBus.type == BusType.vip) {
         int tripid = selectedBus.id;
-        Trip trip = Trip(startPoint, stopPoint, selectedBus, price, tripid);
+
+        Trip trip = Trip(
+          startPoint,
+          stopPoint,
+          selectedBus,
+          price,
+          tripid,
+        );
         Trip.tripList.add(trip);
       }
       print("Trip Was Sucssesfully added");
     } else {
       print("Invalid bus ID");
     }
+
     terminalMenu();
   }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
   static void viewAvailableTrips() {
     // View available trips implementation
     print("List Of Trips");
     List<int> tripid = [];
+
     for (Trip trips in Trip.tripList) {
       Trip a = Trip(trips.startPoint, trips.stopPoint, trips.bus, trips.price,
           trips.tripID);
@@ -265,6 +291,7 @@ class Terminal {
     terminalMenu();
   }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
   static void bookTicket() {
 // View available trips implementation
     print("List Of Trips");
@@ -328,7 +355,13 @@ class Terminal {
         print("Canceled");
         return terminalMenu();
       }
+      if (selectedBus.seatsList[int.parse(input2) - 1] == "bb") {
+        print("** You Have Already Buy This Seat");
+        print("Canceled");
+        return terminalMenu();
+      }
       selectedBus.setSeatStatus(int.parse(input2) - 1, "rr");
+      print("Seat ${int.parse(input2)} Was Reserved");
     }
     // else {
     //   print("Invalid bus ID");
@@ -336,6 +369,161 @@ class Terminal {
     // }
     terminalMenu();
   }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+  static void byaTicket() {
+    // View available trips implementation
+    print("List Of Trips");
+    List<int> tripid = [];
+    for (Trip trips in Trip.tripList) {
+      Trip a = Trip(trips.startPoint, trips.stopPoint, trips.bus, trips.price,
+          trips.tripID);
+      tripid.add(a.tripID);
+      print(
+          "BusID : ${trips.tripID}, BusName : ${trips.bus.name}, BusType : ${trips.bus.type.name}, Start Point : ${trips.startPoint}, Stop Point : ${trips.stopPoint}, Price : ${trips.price}");
+    }
+    if (tripid.isEmpty) {
+      print("*Error Trip Not Found");
+      return terminalMenu();
+    }
+    // Enter bus ID to Edit Seats
+    print("Enter Bus ID to Edit Seats(${Trip.tripList.length + 1}-Cancel)");
+    String? input = stdin.readLineSync();
+    if (input == Trip.tripList.length + 1) {
+      print("Canceled");
+      return terminalMenu();
+    }
+    if (input == null || input.isEmpty) {
+      print("Please Enter Valid Value");
+      return terminalMenu();
+    }
+    if (int.tryParse(input) == null) {
+      print("Please Enter Valid Value");
+      return terminalMenu();
+    }
+
+    //Store selected bus
+    Bus? selectedBus;
+    for (Bus bus in Bus.busList) {
+      if (bus.id == int.parse(input)) {
+        selectedBus = bus;
+        break;
+      }
+    }
+    if (selectedBus != null) {
+      print("Selected bus: ${selectedBus.name}");
+      // Display seats
+      forInSeats(input);
+      // Reserve a seat
+      print("Enter Wich Seat Do You Want To Buy(Enter 0-Cancel)");
+      String? input2 = stdin.readLineSync();
+      if (input2 == null || input2.isEmpty) {
+        print("Please Enter Valid Value");
+        return terminalMenu();
+      }
+      if (int.tryParse(input2) == null) {
+        print("Please Enter Valid Value");
+        return terminalMenu();
+      }
+      if (int.parse(input2) > selectedBus.seatsList.length ||
+          int.parse(input2) < 0) {
+        print("Please Enter Valid Value");
+        return terminalMenu();
+      }
+      if (input2 == "0") {
+        print("Canceled");
+        return terminalMenu();
+      }
+      if (selectedBus.seatsList[int.parse(input2) - 1] == "rr") {
+        print("** You Have Already Reserved This Seat");
+        print("Canceled");
+        return terminalMenu();
+      }
+      selectedBus.setSeatStatus(int.parse(input2) - 1, "bb");
+    }
+    // else {
+    //   print("Invalid bus ID");
+    //   return terminalMenu();
+    // }
+    terminalMenu();
+  }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+  static void CancelaTicket() {
+    // View available trips implementation
+    print("List Of Trips");
+    List<int> tripid = [];
+    for (Trip trips in Trip.tripList) {
+      Trip a = Trip(trips.startPoint, trips.stopPoint, trips.bus, trips.price,
+          trips.tripID);
+      tripid.add(a.tripID);
+      print(
+          "BusID : ${trips.tripID}, BusName : ${trips.bus.name}, BusType : ${trips.bus.type.name}, Start Point : ${trips.startPoint}, Stop Point : ${trips.stopPoint}, Price : ${trips.price}");
+    }
+    if (tripid.isEmpty) {
+      print("*Error Trip Not Found");
+      return terminalMenu();
+    }
+    // Enter bus ID to Edit Seats
+    print("Enter Bus ID to Edit Seats(${Trip.tripList.length + 1}-Cancel)");
+    String? input = stdin.readLineSync();
+    if (input == Trip.tripList.length + 1) {
+      print("Canceled");
+      return terminalMenu();
+    }
+    if (input == null || input.isEmpty) {
+      print("Please Enter Valid Value");
+      return terminalMenu();
+    }
+    if (int.tryParse(input) == null) {
+      print("Please Enter Valid Value");
+      return terminalMenu();
+    }
+
+    //Store selected bus
+    Bus? selectedBus;
+    for (Bus bus in Bus.busList) {
+      if (bus.id == int.parse(input)) {
+        selectedBus = bus;
+        break;
+      }
+    }
+    if (selectedBus != null) {
+      print("Selected bus: ${selectedBus.name}");
+      // Display seats
+      forInSeats(input);
+      // Reserve a seat
+      print("Enter Wich Seat Do You Want To Cancel(Enter 0-Cancel)");
+      String? input2 = stdin.readLineSync();
+      if (input2 == null || input2.isEmpty) {
+        print("**Please Enter Valid Value");
+        return terminalMenu();
+      }
+      if (int.tryParse(input2) == null) {
+        print("**Please Enter Valid Value");
+        return terminalMenu();
+      }
+      if (int.parse(input2) > selectedBus.seatsList.length ||
+          int.parse(input2) < 0) {
+        print("**Please Enter Valid Value");
+        return terminalMenu();
+      }
+      if (input2 == "0") {
+        print("Canceled");
+        return terminalMenu();
+      }
+      selectedBus.setSeatStatus(
+          int.parse(input2) - 1, int.parse(input2).toString());
+    }
+    // else {
+    //   print("Invalid bus ID");
+    //   return terminalMenu();
+    // }
+    terminalMenu();
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  static void tripReport() {}
 }
 
 void forInSeats(String input) {
