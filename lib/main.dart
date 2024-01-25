@@ -2,6 +2,8 @@
 //attach seats to bosses and can edit each seat
 //fix errors and remain
 import 'dart:io';
+import 'bus.dart';
+import 'trip.dart';
 
 void main() {
   Terminal.terminalMenu();
@@ -216,22 +218,18 @@ class Terminal {
       String stopPoint = input2;
       int price = int.parse(input3);
       if (selectedBus.type == BusType.normal) {
-        Trip trip = Trip(
-          startPoint,
-          stopPoint,
-          selectedBus,
-          price,
-        );
+        int busId;
+        busId = selectedBus.id;
+        Trip trip = Trip(startPoint, stopPoint, selectedBus, price, busId);
         Trip.tripList.add(trip);
+        Bus.busList.removeAt(selectedBus.id);
       }
       if (selectedBus.type == BusType.vip) {
-        Trip trip = Trip(
-          startPoint,
-          stopPoint,
-          selectedBus,
-          price,
-        );
+        int busId;
+        busId = selectedBus.id;
+        Trip trip = Trip(startPoint, stopPoint, selectedBus, price, busId);
         Trip.tripList.add(trip);
+        Bus.busList.removeAt(selectedBus.id);
       }
       print("Trip Was Sucssesfully added");
     } else {
@@ -270,10 +268,19 @@ class Terminal {
           "BusID : ${trips.bus.id}, BusName : ${trips.bus.name}, BusType : ${trips.bus.type.name}, Start Point : ${trips.startPoint}, Stop Point : ${trips.stopPoint}, Price : ${trips.price}");
     }
     // Enter bus ID to Edit Seats
-    print("Enter Bus ID to Edit Seats");
+    print("Enter Bus ID to Edit Seats(${Trip.tripList.length + 1}-Cancel)");
     String? input = stdin.readLineSync();
+
     if (input == null || input.isEmpty) {
       print("Please Enter Valid Value");
+      return terminalMenu();
+    }
+    if (int.tryParse(input) == null) {
+      print("Please Enter Valid Value");
+      return terminalMenu();
+    }
+    if (input == Trip.tripList.length + 1) {
+      print("Canceled");
       return terminalMenu();
     }
     //Store selected bus
@@ -295,6 +302,15 @@ class Terminal {
         print("Please Enter Valid Value");
         return terminalMenu();
       }
+      if (int.tryParse(input2) == null) {
+        print("Please Enter Valid Value");
+        return terminalMenu();
+      }
+      if (int.parse(input2) > selectedBus.seatsList.length ||
+          int.parse(input2) < 0) {
+        print("Please Enter Valid Value");
+        return terminalMenu();
+      }
       if (input2 == "0") {
         print("Canceled");
         return terminalMenu();
@@ -302,6 +318,7 @@ class Terminal {
       selectedBus.setSeatStatus(int.parse(input2) - 1, "rr");
     } else {
       print("Invalid bus ID");
+      return terminalMenu();
     }
     terminalMenu();
   }
@@ -335,44 +352,7 @@ class Terminal {
   // }
 }
 
-class Bus {
-  static List<Bus> busList = [];
-  // Bus class implementation
-  Bus(
-    this.name,
-    this.type,
-    this.id,
-    this.seatsList,
-  );
-  final String name;
-  final BusType type;
-  final int id;
-  final List<String> seatsList;
-  // Set seat status
-  void setSeatStatus(int seatNumber, String status) {
-    seatsList[seatNumber] = status;
-  }
-}
-
-enum BusType { vip, normal }
-
-class Trip {
-  static List<Trip> tripList = [];
-  // Trip class implementation
-  Trip(
-    this.startPoint,
-    this.stopPoint,
-    this.bus,
-    this.price,
-  );
-
-  final Bus bus;
-  final String startPoint;
-  final String stopPoint;
-  final int price;
-}
-
-forInSeats(String input) {
+void forInSeats(String input) {
   for (Bus buses in Bus.busList) {
     if (buses.id == int.parse(input)) {
       if (buses.type == BusType.vip) {
