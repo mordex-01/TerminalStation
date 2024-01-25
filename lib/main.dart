@@ -218,18 +218,23 @@ class Terminal {
       String stopPoint = input2;
       int price = int.parse(input3);
       if (selectedBus.type == BusType.normal) {
-        int busId;
-        busId = selectedBus.id;
-        Trip trip = Trip(startPoint, stopPoint, selectedBus, price, busId);
+        Trip trip = Trip(
+          startPoint,
+          stopPoint,
+          selectedBus,
+          price,
+        );
         Trip.tripList.add(trip);
-        Bus.busList.removeAt(selectedBus.id);
       }
       if (selectedBus.type == BusType.vip) {
-        int busId;
         busId = selectedBus.id;
-        Trip trip = Trip(startPoint, stopPoint, selectedBus, price, busId);
+        Trip trip = Trip(
+          startPoint,
+          stopPoint,
+          selectedBus,
+          price,
+        );
         Trip.tripList.add(trip);
-        Bus.busList.removeAt(selectedBus.id);
       }
       print("Trip Was Sucssesfully added");
     } else {
