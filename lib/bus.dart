@@ -11,6 +11,7 @@ class Bus {
   final BusType type;
   final int id;
   final List<String> seatsList;
+  late int cancelCount = 0;
   // Set seat status
   void setSeatStatus(int seatNumber, String status) {
     seatsList[seatNumber] = status;

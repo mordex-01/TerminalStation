@@ -10,7 +10,7 @@ void main() {
 }
 
 class Terminal {
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   static void terminalMenu() {
     // Terminal menu implementation
     print("""
@@ -240,13 +240,25 @@ class Terminal {
       int tripid = selectedBus.id;
 
       if (selectedBus.type == BusType.normal) {
-        Trip trip = Trip(startPoint, stopPoint, selectedBus, price, tripid, 0);
+        Trip trip = Trip(
+          startPoint,
+          stopPoint,
+          selectedBus,
+          price,
+          tripid,
+        );
         Trip.tripList.add(trip);
       }
       if (selectedBus.type == BusType.vip) {
         int tripid = selectedBus.id;
 
-        Trip trip = Trip(startPoint, stopPoint, selectedBus, price, tripid, 0);
+        Trip trip = Trip(
+          startPoint,
+          stopPoint,
+          selectedBus,
+          price,
+          tripid,
+        );
         Trip.tripList.add(trip);
       }
       print("Trip Was Sucssesfully added");
@@ -264,8 +276,13 @@ class Terminal {
     List<int> tripid = [];
 
     for (Trip trips in Trip.tripList) {
-      Trip a = Trip(trips.startPoint, trips.stopPoint, trips.bus, trips.price,
-          trips.tripID, trips.cancelCount);
+      Trip a = Trip(
+        trips.startPoint,
+        trips.stopPoint,
+        trips.bus,
+        trips.price,
+        trips.tripID,
+      );
       tripid.add(a.tripID);
       print(
           "BusID : ${trips.tripID}, BusName : ${trips.bus.name}, BusType : ${trips.bus.type.name}, Start Point : ${trips.startPoint}, Stop Point : ${trips.stopPoint}, Price : ${trips.price}");
@@ -296,8 +313,13 @@ class Terminal {
     print("List Of Trips");
     List<int> tripid = [];
     for (Trip trips in Trip.tripList) {
-      Trip a = Trip(trips.startPoint, trips.stopPoint, trips.bus, trips.price,
-          trips.tripID, trips.cancelCount);
+      Trip a = Trip(
+        trips.startPoint,
+        trips.stopPoint,
+        trips.bus,
+        trips.price,
+        trips.tripID,
+      );
       tripid.add(a.tripID);
       print(
           "BusID : ${trips.tripID}, BusName : ${trips.bus.name}, BusType : ${trips.bus.type.name}, Start Point : ${trips.startPoint}, Stop Point : ${trips.stopPoint}, Price : ${trips.price}");
@@ -376,8 +398,13 @@ class Terminal {
     print("List Of Trips");
     List<int> tripid = [];
     for (Trip trips in Trip.tripList) {
-      Trip a = Trip(trips.startPoint, trips.stopPoint, trips.bus, trips.price,
-          trips.tripID, trips.cancelCount);
+      Trip a = Trip(
+        trips.startPoint,
+        trips.stopPoint,
+        trips.bus,
+        trips.price,
+        trips.tripID,
+      );
       tripid.add(a.tripID);
       print(
           "BusID : ${trips.tripID}, BusName : ${trips.bus.name}, BusType : ${trips.bus.type.name}, Start Point : ${trips.startPoint}, Stop Point : ${trips.stopPoint}, Price : ${trips.price}");
@@ -454,8 +481,13 @@ class Terminal {
     print("List Of Trips");
     List<int> tripid = [];
     for (Trip trips in Trip.tripList) {
-      Trip a = Trip(trips.startPoint, trips.stopPoint, trips.bus, trips.price,
-          trips.tripID, trips.cancelCount);
+      Trip a = Trip(
+        trips.startPoint,
+        trips.stopPoint,
+        trips.bus,
+        trips.price,
+        trips.tripID,
+      );
       tripid.add(a.tripID);
       print(
           "BusID : ${trips.tripID}, BusName : ${trips.bus.name}, BusType : ${trips.bus.type.name}, Start Point : ${trips.startPoint}, Stop Point : ${trips.stopPoint}, Price : ${trips.price}");
@@ -488,6 +520,7 @@ class Terminal {
         break;
       }
     }
+    selectedBus?.cancelCount++;
     if (selectedBus != null) {
       print("Selected bus: ${selectedBus.name}");
       // Display seats
@@ -514,6 +547,9 @@ class Terminal {
       }
       selectedBus.setSeatStatus(
           int.parse(input2) - 1, int.parse(input2).toString());
+    } else {
+      // bus not found
+      print("Invalid bus ID");
     }
 
     // else {
@@ -529,9 +565,15 @@ class Terminal {
     // View available trips implementation
     print("List Of Trips");
     List<int> tripid = [];
+
     for (Trip trips in Trip.tripList) {
-      Trip a = Trip(trips.startPoint, trips.stopPoint, trips.bus, trips.price,
-          trips.tripID, trips.cancelCount);
+      Trip a = Trip(
+        trips.startPoint,
+        trips.stopPoint,
+        trips.bus,
+        trips.price,
+        trips.tripID,
+      );
       tripid.add(a.tripID);
       print(
           "BusID : ${trips.tripID}, BusName : ${trips.bus.name}, BusType : ${trips.bus.type.name}, Start Point : ${trips.startPoint}, Stop Point : ${trips.stopPoint}, Price : ${trips.price}");
@@ -543,9 +585,11 @@ class Terminal {
     String? intput = stdin.readLineSync();
     //Store selected bus
     Bus? selectedBus;
+    int count = 0;
     for (Bus bus in Bus.busList) {
       if (bus.id == int.parse(intput!)) {
         selectedBus = bus;
+        count = selectedBus.cancelCount;
         break;
       }
     }
@@ -557,6 +601,7 @@ class Terminal {
         }
       }
       print("availableSeats $availableSeats");
+      print("CancelCount = ${count}");
     }
 
     terminalMenu();

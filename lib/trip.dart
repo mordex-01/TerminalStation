@@ -3,9 +3,13 @@ import 'bus.dart';
 class Trip extends Bus {
   static List<Trip> tripList = [];
   // Trip class implementation
-  Trip(this.startPoint, this.stopPoint, this.bus, this.price, this.tripID,
-      this.cancelCount)
-      : super(
+  Trip(
+    this.startPoint,
+    this.stopPoint,
+    this.bus,
+    this.price,
+    this.tripID,
+  ) : super(
           bus.name,
           bus.type,
           bus.id,
@@ -16,5 +20,4 @@ class Trip extends Bus {
   final String stopPoint;
   final int price;
   final int tripID;
-  final int cancelCount;
 }
