@@ -53,7 +53,7 @@ class Terminal {
     }
     if (input == "5") {
       //buy a ticket
-      byaTicket();
+      buyaTicket();
     }
     if (input == "6") {
       //cancel a ticket
@@ -236,7 +236,7 @@ class Terminal {
       }
       String startPoint = input1;
       String stopPoint = input2;
-      int price = int.parse(input3);
+      double price = double.parse(input3);
       int tripid = selectedBus.id;
 
       if (selectedBus.type == BusType.normal) {
@@ -352,6 +352,21 @@ class Terminal {
         break;
       }
     }
+    //Store Trip
+    Trip? selectedTrip;
+
+    for (Trip trip in Trip.tripList) {
+      if (trip.tripID == int.parse(input)) {
+        selectedTrip = trip;
+        break;
+      }
+    }
+
+    if (selectedTrip != null) {
+      double price = selectedTrip.price;
+      price = selectedTrip.price * 30 / 100;
+      selectedTrip.netWorth += price;
+    }
     if (selectedBus != null) {
       print("Selected bus: ${selectedBus.name}");
       // Display seats
@@ -393,7 +408,7 @@ class Terminal {
   }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  static void byaTicket() {
+  static void buyaTicket() {
     // View available trips implementation
     print("List Of Trips");
     List<int> tripid = [];
@@ -427,6 +442,19 @@ class Terminal {
     if (int.tryParse(input) == null) {
       print("Please Enter Valid Value");
       return terminalMenu();
+    }
+    //Store Trip
+    Trip? selectedTrip;
+
+    for (Trip trip in Trip.tripList) {
+      if (trip.tripID == int.parse(input)) {
+        selectedTrip = trip;
+        break;
+      }
+    }
+    if (selectedTrip != null) {
+      double price = selectedTrip.price;
+      selectedTrip.netWorth += price;
     }
 
     //Store selected bus
@@ -520,7 +548,15 @@ class Terminal {
         break;
       }
     }
-    selectedBus?.cancelCount++;
+    //Store Trip
+    Trip? selectedTrip;
+
+    for (Trip trip in Trip.tripList) {
+      if (trip.tripID == int.parse(input)) {
+        selectedTrip = trip;
+        break;
+      }
+    }
     if (selectedBus != null) {
       print("Selected bus: ${selectedBus.name}");
       // Display seats
@@ -545,8 +581,24 @@ class Terminal {
         print("Canceled");
         return terminalMenu();
       }
-      selectedBus.setSeatStatus(
-          int.parse(input2) - 1, int.parse(input2).toString());
+      if (selectedBus.seatsList[int.parse(input2) - 1] == "rr") {
+        double netwoorth = 0;
+        netwoorth = selectedTrip!.netWorth;
+        netwoorth = netwoorth * 80 / 100;
+        selectedTrip.netWorth -= netwoorth;
+        selectedBus.reservecancelCount++;
+        selectedBus.setSeatStatus(
+            int.parse(input2) - 1, int.parse(input2).toString());
+      }
+      if (selectedBus.seatsList[int.parse(input2) - 1] == "bb") {
+        double netwoorth = 0;
+        netwoorth = selectedTrip!.netWorth;
+        netwoorth = netwoorth * 90 / 100;
+        selectedTrip.netWorth -= netwoorth;
+        selectedBus.buyCancelCount++;
+        selectedBus.setSeatStatus(
+            int.parse(input2) - 1, int.parse(input2).toString());
+      }
     } else {
       // bus not found
       print("Invalid bus ID");
@@ -585,11 +637,13 @@ class Terminal {
     String? intput = stdin.readLineSync();
     //Store selected bus
     Bus? selectedBus;
-    int count = 0;
+    int cancelrcount = 0;
+    int cancelbcount = 0;
     for (Bus bus in Bus.busList) {
       if (bus.id == int.parse(intput!)) {
         selectedBus = bus;
-        count = selectedBus.cancelCount;
+        cancelrcount = selectedBus.reservecancelCount;
+        cancelbcount = selectedBus.buyCancelCount;
         break;
       }
     }
@@ -600,8 +654,18 @@ class Terminal {
           availableSeats++;
         }
       }
+      //Store Selected Trip
+      double networth = 0;
+      for (Trip trip in Trip.tripList) {
+        if (trip.tripID == int.parse(intput!)) {
+          networth = trip.netWorth;
+          break;
+        }
+      }
       print("availableSeats $availableSeats");
-      print("CancelCount = ${count}");
+      print("CancelreserveCount = ${cancelrcount}");
+      print("CancelBuyCount = ${cancelbcount}");
+      print("Net Worth = ${networth}");
     }
 
     terminalMenu();

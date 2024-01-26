@@ -18,6 +18,7 @@ class Trip extends Bus {
   final Bus bus;
   final String startPoint;
   final String stopPoint;
-  final int price;
+  final double price;
   final int tripID;
+  late double netWorth = 0;
 }
