@@ -72,6 +72,10 @@ class Terminal {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
   // (ترمینال مسافربری) PassengerTerminal implementation
 //Bus definition
+  //fix
+
+  static List<Bus> buslistfix = [];
+
   static void busDefinition() {
     // Bus definition implementation
     int id = Bus.busList.length;
@@ -127,6 +131,7 @@ class Terminal {
         vipSeats,
       );
       Bus.busList.add(bus);
+      buslistfix.add(bus);
       print("Bus Definition is Compleated");
       id++;
       return terminalMenu();
@@ -146,6 +151,7 @@ class Terminal {
         normalSteats,
       );
       Bus.busList.add(bus);
+      buslistfix.add(bus);
       print("Bus Definition is Compleated");
       return terminalMenu();
     }
@@ -153,14 +159,18 @@ class Terminal {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
   static void tripDefinition() {
+    if (buslistfix.isEmpty) {
+      print("Please Define Buss First");
+      return terminalMenu();
+    }
     // Trip definition implementation
     print("List Of Trips");
-    for (Bus buses in Bus.busList) {
+    for (Bus buses in buslistfix) {
       print(
           "ID : ${buses.id}, Name : ${buses.name}, Type : ${buses.type.name}");
     }
     //Select Buss
-    print("Enter bus ID (${Bus.busList.length + 1}-Cancel)");
+    print("Enter bus ID (${buslistfix.length + 1}-Cancel)");
     String? input = stdin.readLineSync();
     if (input == null || input.isEmpty) {
       print("*Error Canceled Enter Valid ID");
@@ -168,7 +178,7 @@ class Terminal {
     }
 
     int busId = int.parse(input);
-    if (busId == Bus.busList.length + 1) {
+    if (busId == buslistfix.length + 1) {
       print("Canceled");
       return terminalMenu();
     }
@@ -248,6 +258,7 @@ class Terminal {
           tripid,
         );
         Trip.tripList.add(trip);
+        buslistfix.removeAt(selectedBus.id);
       }
       if (selectedBus.type == BusType.vip) {
         int tripid = selectedBus.id;
@@ -260,6 +271,7 @@ class Terminal {
           tripid,
         );
         Trip.tripList.add(trip);
+        buslistfix.removeAt(selectedBus.id);
       }
       print("Trip Was Sucssesfully added");
     } else {
@@ -400,10 +412,7 @@ class Terminal {
 
       print("Seat ${int.parse(input2)} Was Reserved");
     }
-    // else {
-    //   print("Invalid bus ID");
-    //   return terminalMenu();
-    // }
+
     terminalMenu();
   }
 
@@ -604,10 +613,6 @@ class Terminal {
       print("Invalid bus ID");
     }
 
-    // else {
-    //   print("Invalid bus ID");
-    //   return terminalMenu();
-    // }
     terminalMenu();
   }
 
