@@ -120,7 +120,7 @@ class Terminal {
     if (input2 == "1") {
       List<String> vipSeats = [];
       for (int i = 1; i <= 9; i++) {
-        vipSeats.add("${i.toString()} ");
+        vipSeats.add("0$i");
       }
       for (int i = 10; i <= 30; i++) {
         vipSeats.add(i.toString());
