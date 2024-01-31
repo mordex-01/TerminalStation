@@ -31,6 +31,10 @@ class Terminal {
       print("*Error Please Enter Valid Number");
       return terminalMenu();
     }
+    if (input.contains(" ")) {
+      print("*Error Please Enter Valid Number");
+      return terminalMenu();
+    }
     if (int.tryParse(input) == null) {
       print("*Error Please Enter Valid Number");
       return terminalMenu();
