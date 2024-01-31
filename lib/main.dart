@@ -134,7 +134,7 @@ class Terminal {
         vipSeats.add(i.toString());
       }
       Bus bus = Bus(
-        input1!,
+        input1,
         BusType.vip,
         id,
         vipSeats,
@@ -154,7 +154,7 @@ class Terminal {
         normalSteats.add(i.toString());
       }
       Bus bus = Bus(
-        input1!,
+        input1,
         BusType.normal,
         id,
         normalSteats,
@@ -170,7 +170,7 @@ class Terminal {
   void tripDefinition() {
     if (buslistfix.isEmpty) {
       print("-----*Error Please Define Buss First-----");
-      return terminalMenu();
+      terminalMenu();
     }
     // Trip definition implementation
     print("List Of Trips");
@@ -536,10 +536,6 @@ class Terminal {
       }
       selectedBus.setSeatStatus(int.parse(input2) - 1, "bb");
     }
-    // else {
-    //   print("Invalid bus ID");
-    //   return terminalMenu();
-    // }
     terminalMenu();
   }
 
