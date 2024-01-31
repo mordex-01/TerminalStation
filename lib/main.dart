@@ -10,7 +10,19 @@ void main() {
   terminal.terminalMenu();
 }
 
-class Terminal {
+class Terminal implements Calculate {
+  @override
+  cancelBuy(x) {
+    double refundAmount = x * 80 / 100;
+    return refundAmount;
+  }
+
+  @override
+  cancelReserve(double x) {
+    double refundAmount = x * 90 / 100;
+    throw refundAmount;
+  }
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   void terminalMenu() {
     // Terminal menu implementation
@@ -621,7 +633,7 @@ class Terminal {
       if (selectedBus.seatsList[int.parse(input2) - 1] == "rr") {
         double netwoorth = 0;
         netwoorth = selectedTrip!.netWorth;
-        netwoorth = netwoorth * 80 / 100;
+        netwoorth = cancelReserve(netwoorth);
         selectedTrip.netWorth -= netwoorth;
         selectedBus.reservecancelCount++;
         selectedBus.setSeatStatus(
@@ -630,7 +642,7 @@ class Terminal {
       if (selectedBus.seatsList[int.parse(input2) - 1] == "bb") {
         double netwoorth = 0;
         netwoorth = selectedTrip!.netWorth;
-        netwoorth = netwoorth * 90 / 100;
+        netwoorth = cancelBuy(netwoorth);
         selectedTrip.netWorth -= netwoorth;
         selectedBus.buyCancelCount++;
         selectedBus.setSeatStatus(
@@ -772,4 +784,9 @@ availableSeats: $availableSeats , CancelreserveCount $cancelrcount, CancelBuyCou
       }
     }
   }
+}
+
+abstract class Calculate {
+  cancelBuy(double x);
+  cancelReserve(double x);
 }
