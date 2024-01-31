@@ -33,15 +33,15 @@ class Terminal {
     }
     if (input.contains(" ")) {
       print("*Error Please Enter Valid Number");
-      return terminalMenu();
+      terminalMenu();
     }
     if (int.tryParse(input) == null) {
       print("-----*Error Please Enter Valid Number-----");
-      return terminalMenu();
+      terminalMenu();
     }
     if (int.parse(input) > 8 || int.parse(input) < 1) {
       print("-----*Error Please Enter Valid Number-----");
-      return terminalMenu();
+      terminalMenu();
     }
     if (input == "1") {
       busDefinition();
@@ -190,11 +190,11 @@ class Terminal {
     int busId = int.parse(input);
     if (busId < buslistfix.first.id) {
       print("-----*Error Canceled Enter Valid ID-----");
-      return terminalMenu();
+      terminalMenu();
     }
     if (busId == buslistfix.length + 1) {
       print("Canceled");
-      return terminalMenu();
+      terminalMenu();
     }
     Bus? selectedBus;
     for (Bus bus in Bus.busList) {
@@ -217,12 +217,12 @@ class Terminal {
       // if Enter 0
       if (input1 == "0") {
         print("-----Canceled-----");
-        return terminalMenu();
+        terminalMenu();
       }
       //if Contains int
       if (int.tryParse(input1) != null) {
         print("-----*Error Please Enter Valid Start Point-----");
-        return terminalMenu();
+        terminalMenu();
       }
       print("Enter Trip Stop Point(0-Cancel)");
       String? input2 = stdin.readLineSync();
@@ -431,7 +431,7 @@ class Terminal {
       if (selectedBus.seatsList[int.parse(input2) - 1] == "rr") {
         print("** You Have Already Reserved This Seat");
         print("Canceled");
-        return terminalMenu();
+        terminalMenu();
       }
       selectedBus.setSeatStatus(int.parse(input2) - 1, "rr");
 
@@ -532,7 +532,7 @@ class Terminal {
       if (selectedBus.seatsList[int.parse(input2) - 1] == "bb") {
         print("** You Have Already Buy This Seat");
         print("Canceled");
-        return terminalMenu();
+        terminalMenu();
       }
       selectedBus.setSeatStatus(int.parse(input2) - 1, "bb");
     }
