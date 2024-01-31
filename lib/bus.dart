@@ -1,6 +1,5 @@
 class Bus {
   static List<Bus> busList = [];
-  // Bus class implementation
   Bus(
     this.name,
     this.type,

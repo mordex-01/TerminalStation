@@ -2,7 +2,6 @@ import 'bus.dart';
 
 class Trip extends Bus {
   static List<Trip> tripList = [];
-  // Trip class implementation
   Trip(
     this.startPoint,
     this.stopPoint,

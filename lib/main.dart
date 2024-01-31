@@ -1,6 +1,3 @@
-// Main function
-//attach seats to bosses and can edit each seat
-//fix errors and remain
 import 'dart:io';
 import 'bus.dart';
 import 'trip.dart';
@@ -25,7 +22,6 @@ class Terminal implements Calculate {
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   void terminalMenu() {
-    // Terminal menu implementation
     print("""
 **PassengerTerminal Menu
 1-Bus definition
@@ -87,14 +83,9 @@ class Terminal implements Calculate {
   }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // (ترمینال مسافربری) PassengerTerminal implementation
-//Bus definition
-  //fix
-
   static List<Bus> buslistfix = [];
 
   void busDefinition() {
-    // Bus definition implementation
     int id = Bus.busList.length;
 
     print("**Bus definition");
@@ -184,13 +175,11 @@ class Terminal implements Calculate {
       print("-----*Error Please Define Buss First-----");
       terminalMenu();
     }
-    // Trip definition implementation
     print("List Of Trips");
     for (Bus buses in buslistfix) {
       print(
           "ID : ${buses.id}, Name : ${buses.name}, Type : ${buses.type.name}");
     }
-    //Select Buss
     print("Enter bus ID (${buslistfix.length + 1}-Cancel)");
     String? input = stdin.readLineSync();
 
@@ -218,54 +207,44 @@ class Terminal implements Calculate {
 
     if (selectedBus != null) {
       print("Selected bus: ${selectedBus.name}");
-      //
       print("Enter Trip Start Point(0-Cancel)");
       String? input1 = stdin.readLineSync();
-      //if null
       if (input1 == null || input1.isEmpty) {
         print("-----Canceled-----");
         return terminalMenu();
       }
-      // if Enter 0
       if (input1 == "0") {
         print("-----Canceled-----");
         terminalMenu();
       }
-      //if Contains int
       if (int.tryParse(input1) != null) {
         print("-----*Error Please Enter Valid Start Point-----");
         terminalMenu();
       }
       print("Enter Trip Stop Point(0-Cancel)");
       String? input2 = stdin.readLineSync();
-      //if null
       if (input2 == null || input2.isEmpty) {
         print("-----Canceled------");
         return terminalMenu();
       }
-      //if Enter 0
       if (input2 == "0") {
         print("-----Canceled------");
         return terminalMenu();
       }
-      //if Contains int
       if (int.tryParse(input2) != null) {
         print("-----*Error Please Enter Valid Stop Point-----");
         return terminalMenu();
       }
       print("Enter Ticket Price(0-Cancel)");
       String? input3 = stdin.readLineSync();
-      //if null
       if (input3 == null || input3.isEmpty) {
         print("*Error Please Enter Valid Price");
         return terminalMenu();
       }
-      //if contains Letter
       if (int.tryParse(input3) == null) {
         print("*Error Please Enter Valid Price");
         return terminalMenu();
       }
-      //if Enter 0
       if (input3 == "0") {
         print("Canceled");
         return terminalMenu();
@@ -309,7 +288,6 @@ class Terminal implements Calculate {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
   void viewAvailableTrips() {
-    // View available trips implementation
     print("List Of Trips");
     List<int> tripid = [];
 
@@ -351,9 +329,6 @@ class Terminal implements Calculate {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
   void bookTicket() {
-//fix
-
-// View available trips implementation
     print("List Of Trips");
     List<int> tripid = [];
     for (Trip trips in Trip.tripList) {
@@ -372,7 +347,6 @@ class Terminal implements Calculate {
       print("*Error Trip Not Found");
       terminalMenu();
     }
-    // Enter bus ID to Edit Seats
     print("Enter Bus ID to Edit Seats(${Trip.tripList.length + 1}-Cancel)");
     String? input = stdin.readLineSync();
     if (input == Trip.tripList.length + 1) {
@@ -415,7 +389,7 @@ class Terminal implements Calculate {
       print("Selected bus: ${selectedBus.name}");
       // Display seats
       forInSeats(input);
-      // Reserve a seat
+
       print("Enter Wich Seat Do You Want To Reserved(Enter 0-Cancel)");
       String? input2 = stdin.readLineSync();
       if (input2 == null || input2.isEmpty) {
@@ -455,7 +429,6 @@ class Terminal implements Calculate {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
   void buyaTicket() {
-    // View available trips implementation
     print("List Of Trips");
     List<int> tripid = [];
     for (Trip trips in Trip.tripList) {
@@ -474,10 +447,8 @@ class Terminal implements Calculate {
       print("*Error Trip Not Found");
       terminalMenu();
     }
-    // Enter bus ID to Edit Seats
     print("Enter Bus ID to Edit Seats(${Trip.tripList.length + 1}-Cancel)");
     String? input = stdin.readLineSync();
-    // ignore: unrelated_type_equality_checks
     if (input == Trip.tripList.length + 1) {
       print("Canceled");
       terminalMenu();
@@ -516,7 +487,6 @@ class Terminal implements Calculate {
       print("Selected bus: ${selectedBus.name}");
       // Display seats
       forInSeats(input);
-      // Reserve a seat
       print("Enter Wich Seat Do You Want To Buy(Enter 0-Cancel)");
       String? input2 = stdin.readLineSync();
       if (input2 == null || input2.isEmpty) {
@@ -553,7 +523,6 @@ class Terminal implements Calculate {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
   void cancelaTicket() {
-    // View available trips implementation
     print("List Of Trips");
     List<int> tripid = [];
     for (Trip trips in Trip.tripList) {
@@ -572,7 +541,6 @@ class Terminal implements Calculate {
       print("*Error Trip Not Found");
       terminalMenu();
     }
-    // Enter bus ID to Edit Seats
     print("Enter Bus ID to Edit Seats(${Trip.tripList.length + 1}-Cancel)");
     String? input = stdin.readLineSync();
 
@@ -610,7 +578,6 @@ class Terminal implements Calculate {
       print("Selected bus: ${selectedBus.name}");
       // Display seats
       forInSeats(input);
-      // Reserve a seat
       print("Enter Wich Seat Do You Want To Cancel(Enter 0-Cancel)");
       String? input2 = stdin.readLineSync();
       if (input2 == null || input2.isEmpty) {
@@ -649,7 +616,6 @@ class Terminal implements Calculate {
             int.parse(input2) - 1, int.parse(input2).toString());
       }
     } else {
-      // bus not found
       print("Invalid bus ID");
     }
 
@@ -658,8 +624,6 @@ class Terminal implements Calculate {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   void tripReport() {
-    // View Empty Seats
-    // View available trips implementation
     print("List Of Trips");
     List<int> tripid = [];
 
